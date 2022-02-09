@@ -7,7 +7,7 @@ resource "random_string" "rand" {
 }
 
 locals {
-    namespace = substr(join("-", [var.namespace, random_string.result]), 0, 24)
+    namespace = substr(join("-", [var.namespace, random_string.rand.result]), 0, 24)
 }
 
 resource "aws_resourcegroups_group" "resourcegroups_group" {
@@ -66,7 +66,7 @@ resource "aws_s3_bucket_public_access_block" "s3_bucket"{
 }
 
 resource "aws_dynamodb_table" "dynamodb_table" {
-    name = "${loca.namespace}-state-lock"
+    name = "${local.namespace}-state-lock"
     hash_key = "LockID"
     billing_mode = "PAY_PER_REQUEST"
     attribute {
